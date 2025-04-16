@@ -166,7 +166,7 @@ class ProfileUpdateView(UpdateView):
     def get_success_url(self):
         return reverse('profile_detail', kwargs={'pk': self.object.pk})
     
-@method_decorator(login_required, name='dispatch')   
+@login_required   
 def logout_view(request):
     logout(request)
     messages.add_message(request, messages.INFO, "Se ha cerrado sesión correctamente.")

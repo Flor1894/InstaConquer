@@ -7,6 +7,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        .likeButton {
+            text-decoration: none;
+            color: black
+        }
+    </style>
+
 </head>
 <body>
    {% include '_includes/_header.html' %} 
@@ -19,6 +27,33 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
+    
+    <script>
+        const likeButtons = document.querySelectorAll('.likeButton');
+        likeButtons.forEach(likeButton => {
+            //Obtenemos el span que contiene el numero de likes.
+            let nLikesSpan = likeButton.querySelector('span');
+            //Obtenemos el numero de likes.
+            let nLikes = parseInt(nLikesSpan.innerHTML);
+            //Agregamos un evento al boton.
+            likeButton.addEventListener('click', (event) =>{
+                //Prevenimos el comportamiento por defecto del boton.
+                event.preventDefault();
+                //Hacemos una peticion GET al href del boton.
+                fetch(likeButton.href)
+                    .then(response => response.json())
+                    .then(data => {
+                        //Si la peticion fue exitosa, cambiamos el contenido del boton.
+                        if (data.liked) {
+                            nLikes +=1;
+                            likeButton.innerHTML = `<span>${nLikes}</span> <i class="bi bi-heart-fill"></i>`;
+                        } else {
+                            nLikes -=1;
+                            likeButton.innerHTML = `<span>${nLikes}</span> <i class="bi bi-heart"></i>`;
+                        }
+                    });
+            });
+        });
+    </script>
 </body>
 </html>
